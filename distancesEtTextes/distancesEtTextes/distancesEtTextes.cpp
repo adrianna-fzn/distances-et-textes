@@ -6,31 +6,33 @@ void calculateLevenshtein(std::string word1, std::string word2);
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    std::cout << "Veuillez entrer le premier mot: ";
+    std::string word1;
+    std::cin >> word1;
 
-	calculateLevenshtein("chato", "chiens");
+    std::cout << "Veuillez entrer le deuxième mot: ";
+    std::string word2;
+    std::cin >> word2;
 
+    calculateLevenshtein(word1, word2);
 }
 
 void calculateLevenshtein(std::string word1, std::string word2)
 {
     std::cout << word1.length() << "\n" << word2.length() << "\n";
-    int distance = 0;
 
-	int rows = 6;
-	int columns = 7;
-
-    std::array<std::array<int,7>,6> mat;
+    std::vector<std::vector<int>> mat;
 
     for (int i = 0; i < word1.length() +1; i++)
     {
+        mat.push_back(std::vector<int>());
         for (int j = 0; j < word2.length() +1; j++)
         {
             if (i == 0) {
-				mat[i][j] = j;
+				mat[i].push_back(j);
 			}
 			else if (j == 0) {
-				mat[i][j] = i;
+				mat[i].push_back(i);
             }
             else
             {
@@ -43,8 +45,12 @@ void calculateLevenshtein(std::string word1, std::string word2)
 				    array.push_back(mat[i - 1][j - 1] + 1);
 				    temp = *std::min_element(array.begin(), array.end());
                 }
+                else if (mat[i - 1][j - 1] != 0)
+                {
+                    temp = mat[i - 1][j - 1];
+                }
 
-                mat[i][j] = temp;
+                mat[i].push_back(temp);
             }
         }
     }
@@ -57,4 +63,9 @@ void calculateLevenshtein(std::string word1, std::string word2)
         }
 		std::cout << "\n";
     }
+
+	int distance = mat[word1.length()][word2.length()];
+
+	std::cout << "\nLa distance de Levenshtein entre le mot " << word1 << " et le mot " << word2 << " est: " << distance;
+
 }
