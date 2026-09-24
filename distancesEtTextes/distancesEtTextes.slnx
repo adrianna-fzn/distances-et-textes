@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="distancesEtTextes/distancesEtTextes.vcxproj" Id="55d4db5c-a98e-4468-948a-0cef3d8c655f" />
+</Solution>
