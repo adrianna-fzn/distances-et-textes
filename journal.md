@@ -11,5 +11,7 @@ continuer exo sur 1.2 Exemples
 Commencer l'algorithme de levenshtein
 ## 23/09 : 
 Continuer l'algorithme de levenshtein
-## 24/09
+## 24/09 :
 Continuer l'algorithme de levenshtein
+## 25/09 :
+Commencer à comparer le mot utilisateur avec les 1500 mots les plus courants
