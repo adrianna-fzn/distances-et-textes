@@ -141,6 +141,10 @@
   <ItemGroup>
     <ClCompile Include="distancesEtTextes.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="nlohmann\json.hpp" />
+    <ClInclude Include="nlohmann\json_fwd.hpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
