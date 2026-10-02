@@ -20,7 +20,11 @@ int main()
 
     //calculateLevenshtein(word1, word2);
 
-	findClosestWords("bonjour");
+	std::cout << "Veuillez entrer un mot: ";
+	std::string word1;
+	std::cin >> word1;
+
+	findClosestWords(word1);
 }
 
 int calculateLevenshtein(std::string word1, std::string word2)
@@ -92,11 +96,27 @@ void findClosestWords(std::string userWord) {
         distances[word.second] = calculateLevenshtein(word.second, userWord);
     }
 
-    for (auto e : distances)
-    {
-		std::cout << e.second << " " << e.first << std::endl;
-    }
+  //  for (auto e : distances)
+  //  {
+		//std::cout << e.second << " " << e.first << std::endl;
+  //  }
 	//std::cout << distances[frequentWords[0]] << std::endl;
+
+    // Source - https://stackoverflow.com/a/26843031
+    // Posted by Timmmm, modified by community. See post 'Timeline' for change history
+    // Retrieved 2026-10-02, License - CC BY-SA 4.0
+    auto a = min_element(distances.begin(), distances.end(),[](const auto& l, const auto& r) { 
+		std::cout << l.first << l.second << " " << r.first << r.second << std::endl;
+		if (l.second == r.second) {
+			return l.first < r.first;
+		}
+        return l.second < r.second; 
+        });
+
+	std::string word = a->first == userWord ? a->first : "";
+
+    std::cout << "Le mot le plus proche de " << userWord << " est: " << a->first << std::endl;
+
 
 
     //int temp = *std::min_element(distances.begin(), distances.end());
