@@ -93,7 +93,10 @@ void findClosestWords(std::string userWord) {
     std::unordered_map<std::string, int> distances;
     for (auto word : frequentWords)
     {
-        distances[word.second] = calculateLevenshtein(word.second, userWord);
+        int calc = calculateLevenshtein(word.second, userWord);
+		if (calc != 0) {
+            distances[word.second] = calc;
+		}
     }
 
   //  for (auto e : distances)
@@ -105,15 +108,11 @@ void findClosestWords(std::string userWord) {
     // Source - https://stackoverflow.com/a/26843031
     // Posted by Timmmm, modified by community. See post 'Timeline' for change history
     // Retrieved 2026-10-02, License - CC BY-SA 4.0
-    auto a = min_element(distances.begin(), distances.end(),[](const auto& l, const auto& r) { 
-		std::cout << l.first << l.second << " " << r.first << r.second << std::endl;
-		if (l.second == r.second) {
-			return l.first < r.first;
-		}
-        return l.second < r.second; 
-        });
 
-	std::string word = a->first == userWord ? a->first : "";
+
+    auto a = min_element(distances.begin(), distances.end(),[](const auto& l, const auto& r) {return l.second < r.second;});
+
+	std::string word = a->first;
 
     std::cout << "Le mot le plus proche de " << userWord << " est: " << a->first << std::endl;
 
