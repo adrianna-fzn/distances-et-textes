@@ -5,20 +5,38 @@
 #include "nlohmann/json.hpp"
 using json = nlohmann::json;
 
-int calculateLevenshtein(std::string word1, std::string word2);
+std::vector<std::vector<int>> calculateLevenshteinMatrice(std::string word1, std::string word2);
 void findClosestWords(std::string userWord);
+char menuChoiceUpper();
+void calculateDistanceTwoWords();
 
 int main()
 {
-    //std::cout << "Veuillez entrer le premier mot: ";
-    //std::string word1;
-    //std::cin >> word1;
+    char choice;
 
-    //std::cout << "Veuillez entrer le deuxième mot: ";
-    //std::string word2;
-    //std::cin >> word2;
+    do {
+        std::cout << "\n\nBienvenue ! Veuillez choisir une option : " << std::endl;
+        std::cout << "A: Calculer la distance entre deux mots" << std::endl;
+        std::cout << "B: Trouver les n nombres les plus proche d'un mot" << std::endl;
+        std::cout << "Q: Quitter" << std::endl;
 
-    //calculateLevenshtein(word1, word2);
+        choice = menuChoiceUpper();
+
+        switch (choice) {
+        case 'A':
+            calculateDistanceTwoWords();
+            break;
+        case 'B':
+            //todo: b
+            break;
+        case 'Q':
+            return 0;
+        default:
+            std::cout << "Veuillez choisir une option valide" << std::endl;
+            break;
+        }
+    } while (choice != 'Q');
+    
 
 	std::cout << "Veuillez entrer un mot: ";
 	std::string word1;
@@ -27,7 +45,37 @@ int main()
 	findClosestWords(word1);
 }
 
-int calculateLevenshtein(std::string word1, std::string word2)
+void calculateDistanceTwoWords() {
+    std::string word1;
+    std::string word2;
+
+    std::cout << "Veuillez entrer le premier mot: ";
+    std::cin >> word1;
+
+    std::cout << "Veuillez entrer le deuxième mot: ";
+    std::cin >> word2;
+
+    std::vector<std::vector<int>> levenshteinMatrice = calculateLevenshteinMatrice(word1, word2);
+
+    for (auto elem : levenshteinMatrice)
+    {
+       for (auto e : elem) {
+     	  std::cout << e << " ";
+       }
+       std::cout << "\n";
+    }
+
+    std::cout << "La distance entre le mot " << word1 << " et le mot " << word2 << " est de " << levenshteinMatrice[word1.length()][word2.length()] << ".\n";
+}
+
+
+char menuChoiceUpper() {
+    char choice;
+    std::cin >> choice;
+    return std::toupper(choice);
+}
+
+std::vector<std::vector<int>> calculateLevenshteinMatrice(std::string word1, std::string word2)
 {
     std::vector<std::vector<int>> mat;
 
@@ -72,7 +120,7 @@ int calculateLevenshtein(std::string word1, std::string word2)
 		//std::cout << "\n";
   //  }
 
-	return mat[word1.length()][word2.length()];
+	return mat;
 
 	//std::cout << "\nLa distance de Levenshtein entre le mot " << word1 << " et le mot " << word2 << " est: " << distance;
 }
@@ -90,12 +138,21 @@ void findClosestWords(std::string userWord) {
         i++;
     }
 
-    std::unordered_map<std::string, int> distances;
+    std::map<std::string, int> distances;
+
+    std::map<int, std::vector<std::string>> testMap;
+
+
     for (auto word : frequentWords)
     {
-        int calc = calculateLevenshtein(word.second, userWord);
-		if (calc != 0) {
-            distances[word.second] = calc;
+		int wLength = word.second.length();
+		int uwLength = userWord.length();
+
+        std::vector<std::vector<int>> calc = calculateLevenshteinMatrice(word.second, userWord);
+        int test = calc[wLength][uwLength];
+		if (test != 0) {
+            distances[word.second] = test;
+			testMap[test].push_back(word.second);
 		}
     }
 
@@ -117,7 +174,36 @@ void findClosestWords(std::string userWord) {
     std::cout << "Le mot le plus proche de " << userWord << " est: " << a->first << std::endl;
 
 
+	//for (auto a : distances)
+	//{
+	//	std::cout << a.first << a.second << std::endl;
+	//}
+
+    std::vector<std::string> ouioui;
+
+	for (auto b : testMap)
+	{
+		for (auto word : b.second) {
+            ouioui.push_back(word);
+		}
+	}
+
+
+	for (int i = 0; i < 6; i++)
+	{
+		std::cout << "Mot " << i + 1 << ": " << ouioui[i] << std::endl;
+	}
+
+	//std::vector<std::vector<int>> mat = calculateLevenshtein(word, userWord);
+
+ //   for(auto var : mat)
+ //   {
+ //       for (auto a : var) {
+ //     	std::cout << a << " ";
+ //       }
+ //       std::cout << "\n";
+ //   }
 
     //int temp = *std::min_element(distances.begin(), distances.end());
 
-}
+}   
